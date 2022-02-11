@@ -44,9 +44,8 @@ if (session('has_no_profile')) {
 		'as' => 'create-topic',
 		'filter' => 'role:teachers'
 		]);
-	$routes->post('topic', 'TopicController::tryToCreate', [
-		'as' => 'create-topic',
-		'filter' => 'role:teachers'
+	$routes->post('booking', 'BookingController::tryToBook', [
+		'as' => 'create-booking'
 		]);
 
 	// Shows the school creation form

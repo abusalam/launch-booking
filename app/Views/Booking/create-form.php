@@ -6,7 +6,7 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-10 offset-md-1">
+			<div class="col-lg-4 offset-lg-4 col-md-10 offset-md-1">
 
 				<div class="card">
 					<h2 class="card-header"><?=lang('app.booking.createTitle')?></h2>
@@ -16,50 +16,49 @@
 
 						<p><?=lang('app.booking.createHelp')?></p>
 
-						<?= form_open_multipart(base_url(route_to('create-assignment'))) ?>
+						<?= form_open_multipart(base_url(route_to('create-booking'))) ?>
 
 							<fieldset <?php // session('has_no_profile') ? '' : 'disabled="disabled"'?>>
 								<pre><?php //var_dump($topicId ?? '')?></pre>
 								<div>
 									<div class="form-row row-eq-spacing-md">
-										<div class="col-md-6 <?php if(session('errors.questions')) : ?>is-invalid<?php endif ?>">
+										<div class="col-md-6 <?php if(session('errors.passenger')) : ?>is-invalid<?php endif ?>">
 											<div class="form-group">
-												<label for="topic_id" class="required">
+												<label for="passenger" class="required">
 													<?=lang('app.booking.name')?>
 												</label>
-												<input type="text" class="form-control" id="title" required="required"
-														name="title" placeholder="<?=lang('app.booking.name')?>"
+												<input type="text" class="form-control" id="passenger" required="required"
+														name="passenger" placeholder="<?=lang('app.booking.name')?>"
 														value="<?php // old('title', $assignment->title) ?>">
 											</div>
 										</div>
-										<div class="col-md-6 <?php if(session('errors.questions')) : ?>is-invalid<?php endif ?>">
+										<div class="col-md-6 <?php if(session('errors.mobile')) : ?>is-invalid<?php endif ?>">
 											<div class="form-group">
-												<label for="questions" class="required"><?=lang('app.booking.mobile')?></label>
-												<input type="text" class="form-control" id="questions" required="required"
-															name="questions" placeholder="<?=lang('app.booking.mobile')?>"
+												<label for="mobile" class="required"><?=lang('app.booking.mobile')?></label>
+												<input type="text" class="form-control" id="mobile" required="required"
+															name="mobile" placeholder="<?=lang('app.booking.mobile')?>"
 															value="<?php // old('questions', $assignment->questions) ?>">
 											</div>
 										</div>
 									</div>
 								</div>
-
-								<div class="form-group <?php if(session('errors.title')) : ?>is-invalid<?php endif ?>">
-									<label for="title" class="required"><?=lang('app.booking.address')?></label>
-									<input type="text" class="form-control" id="title" required="required"
-											name="title" placeholder="<?=lang('app.booking.address')?>"
+								<div class="form-group <?php if(session('errors.address')) : ?>is-invalid<?php endif ?>">
+									<label for="address" class="required"><?=lang('app.booking.address')?></label>
+									<input type="text" class="form-control" id="address" required="required"
+											name="address" placeholder="<?=lang('app.booking.address')?>"
 											value="<?php // old('title', $assignment->title) ?>">
 								</div>
 								<div>
 									<div class="form-row row-eq-spacing-md">
-										<div class="col-md-4 <?php if(session('errors.questions')) : ?>is-invalid<?php endif ?>">
+										<div class="col-md-6 <?php if(session('errors.date')) : ?>is-invalid<?php endif ?>">
 											<div class="form-group">
-												<label for="questions" class="required"><?=lang('app.booking.date')?></label>
-												<input type="text" class="form-control" id="questions" required="required"
-															name="questions" placeholder="<?=lang('app.booking.date')?>"
+												<label for="date" class="required"><?=lang('app.booking.date')?></label>
+												<input type="text" class="form-control" id="date" required="required"
+															name="date" placeholder="<?=lang('app.booking.date')?>"
 															value="<?php // old('questions', $assignment->questions) ?>">
 											</div>
 										</div>
-										<div class="col-md-4 <?php if(session('errors.startTime')) : ?>is-invalid<?php endif ?>">
+										<div class="col-md-6 <?php if(session('errors.startTime')) : ?>is-invalid<?php endif ?>">
 											<div class="form-group">
 												<label for="startTime" class="required"><?=lang('app.booking.slotTitle')?></label>
 												<select class="form-control" id="type" name="type" required="required">
@@ -71,17 +70,21 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-md-4 <?php if(session('errors.endTime')) : ?>is-invalid<?php endif ?>">
-											<div class="form-group">
-												<label for="endTime" class="required"><?=lang('app.booking.end')?></label>
-                        <span class="navbar-text text-monospace badge" id="duration"></span>
-                        <div class="mt-10" id="slider-range"></div>
-												<input type="hidden" class="form-control" id="endTime" required="required"
-															name="endTime" placeholder="<?=lang('app.booking.end')?>"
-															value="<?php // old('endTime', $assignment->endTime) ?>">
-											</div>
-										</div>
 									</div>
+								</div>
+								<div>
+
+                  <div class="<?php if(session('errors.endTime')) : ?>is-invalid<?php endif ?>">
+                    <div class="form-group">
+                      <label for="endTime" class="required"><?=lang('app.booking.end')?></label>
+                      <span class="navbar-text text-monospace badge" id="duration"></span>
+                      <div class="mt-10" id="slider-range"></div>
+                      <input type="hidden" class="form-control" id="endTime" required="required"
+                            name="endTime" placeholder="<?=lang('app.booking.end')?>"
+                            value="<?php // old('endTime', $assignment->endTime) ?>">
+                    </div>
+                  </div>
+
 								</div>
  
 							</fieldset>
