@@ -15,6 +15,7 @@
 			'updateTitle'       => 'Update Account(Pending)',
 			'updateProfile'     => 'My Profile',
 			'updateUserProfile' => 'Update Profile(Pending)',
+			'booking'           => 'Boat Booking',
 			'login'             => 'Login',
 			'logout'            => 'Logout',
 		],
@@ -167,7 +168,7 @@
 			'listTitle' => 'Answers for Assignment',
 		],
 		'booking'     => [
-			'createTitle'     => 'Launch Booking',
+			'createTitle'     => 'Boat Booking',
 			'createHelp'      => 'Booking is available from 8AM to 12PM and 4PM to 8PM Only',
 			'name'            => 'Full Name',
 			'address'         => 'Full Address',

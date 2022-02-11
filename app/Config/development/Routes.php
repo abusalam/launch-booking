@@ -29,7 +29,9 @@ if (session('has_no_profile')) {
 
 } else {
 
-	$routes->get('/', 'Home::index');
+	$routes->get('/', 'Home::index',[
+		'as' => 'home'
+	]);
 	//$routes->get('ci', 'Home::ci');
 
 	$routes->get('profile', 'AccountController::profile', [

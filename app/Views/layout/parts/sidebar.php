@@ -125,15 +125,20 @@
 		<?php endif ?>
 
 	<?php else : ?>
-		
+		<a href="<?= base_url(route_to('home'))?>"
+			class="sidebar-link sidebar-link-with-icon <?= add_class('home')?>">
+			<span class="sidebar-icon">
+				<i class="fa fa-ship" aria-hidden="true"></i>
+			</span>
+			<?=lang('app.menu.booking')?>
+		</a>
 		<a href="<?= base_url(route_to('login'))?>"
 			class="sidebar-link sidebar-link-with-icon <?= add_class('login')?>">
 			<span class="sidebar-icon">
 				<i class="fa fa-sign-in" aria-hidden="true"></i>
 			</span>
 			<?=lang('app.menu.login')?>
-		</a>
-	
+		</a>	
 	<?php endif ?>
 </div>
 

@@ -85,8 +85,7 @@
 								</div>
  
 							</fieldset>
-							<button type="submit" class="btn btn-info btn-block form-control"><?=lang('app.booking.btnCreateTitle')?></button>
-							<button type="submit" class="btn btn-primary btn-block form-control"><?=lang('app.booking.btnCheckTitle')?></button>
+							<button type="submit" class="btn btn-primary btn-block form-control"><?=lang('app.booking.btnCreateTitle')?></button>
 						<?=form_close()?>
 
 					</div>
@@ -103,35 +102,33 @@
         return n < 10 ? '0' + n : n;
       };
 
-    const firstSlot = [];
-    firstSlot[1] = "08:00 AM";
-    firstSlot[2] = "09:00 AM";
-    firstSlot[3] = "10:00 AM";
-    firstSlot[4] = "11:00 AM";
-
-    const nextSlot = [];
-    nextSlot[1] = "04:00 PM";
-    nextSlot[2] = "05:00 PM";
-    nextSlot[3] = "06:00 PM";
-    nextSlot[4] = "07:00 PM";
+    const timeSlot = [];
+    timeSlot[1] = "08:00 AM";
+    timeSlot[2] = "09:00 AM";
+    timeSlot[3] = "10:00 AM";
+    timeSlot[4] = "11:00 AM";
+	  timeSlot[5] = "12:00 AM";
 
 	  $( "#slider-range" ).slider({
       range: true,
       min: 1,
-      max: 4,
+      max: 5,
       values: [ 2, 3 ],
       slide: function( event, ui ) {
-        $( "#duration" ).text( firstSlot[ui.values[ 0 ]] + " - " + firstSlot[ui.values[ 1 ]] );
         if(ui.values[0]==ui.values[1]) {
           ui.slider("values", 0, 2);
-          ui.slider("values", 1, 3);
-          ui.slider( "refresh" );
+          ui.slider("values", 1, 4);
+          ui.slider("refresh");
+        } else {
+          $( "#duration" ).text( timeSlot[ui.values[ 0 ]] + " - " + timeSlot[ui.values[ 1 ]] );
         }
       }
 	  });
-
-	  $( "#duration" ).text( firstSlot[$( "#slider-range" ).slider( "values", 0 )] +
-		" - " + firstSlot[$( "#slider-range" ).slider( "values", 1 )] );
+    if ($( "#slider-range" ).slider( "values", 0 ) != $( "#slider-range" ).slider( "values", 1 )) {
+      $( "#duration" ).text( timeSlot[$( "#slider-range" ).slider( "values", 0 )] +
+		    " - " + timeSlot[$( "#slider-range" ).slider( "values", 1 )] );
+    }
+	  
 	} );
 	</script>
 
@@ -141,32 +138,32 @@
 
 <script {csp-script-nonce}>
 
-var startTimeSlider = document.getElementById('startTimeSlider');
-var startTime = document.getElementById('startTime');
-var endTimeSlider = document.getElementById('endTimeSlider');
-var endTime = document.getElementById('endTime');
+// var startTimeSlider = document.getElementById('startTimeSlider');
+// var startTime = document.getElementById('startTime');
+// var endTimeSlider = document.getElementById('endTimeSlider');
+// var endTime = document.getElementById('endTime');
 
 
 
-var zeroPad = function (n) {
-    return n < 10 ? '0' + n : n;
-  };
+// var zeroPad = function (n) {
+//     return n < 10 ? '0' + n : n;
+//   };
 
-startTimeSlider.addEventListener("click", function (event) {
- startTime.value=timeSlot[startTimeSlider.value];
-});
+// startTimeSlider.addEventListener("click", function (event) {
+//  startTime.value=timeSlot[startTimeSlider.value];
+// });
 
-endTimeSlider.addEventListener("change", function (event) {
-  const d = new Date();
-  var start = d.toDateString()  + " " + timeSlot[startTimeSlider.value];
+// endTimeSlider.addEventListener("change", function (event) {
+//   const d = new Date();
+//   var start = d.toDateString()  + " " + timeSlot[startTimeSlider.value];
 
-  var end = Date.parse(start);
-  var endDate = new Date(end);
-  endDate.setMinutes( endDate.getMinutes() + (30 * endTimeSlider.value)  );
-  var hours = (endDate.getHours() > 12 ? endDate.getHours()-12 : endDate.getHours());
-  var ending = (endDate.getHours() >= 12 ? "PM" : "AM");
-  endTime.value=zeroPad(hours) + ":" + zeroPad(endDate.getMinutes()) + " " + ending;
-});
+//   var end = Date.parse(start);
+//   var endDate = new Date(end);
+//   endDate.setMinutes( endDate.getMinutes() + (30 * endTimeSlider.value)  );
+//   var hours = (endDate.getHours() > 12 ? endDate.getHours()-12 : endDate.getHours());
+//   var ending = (endDate.getHours() >= 12 ? "PM" : "AM");
+//   endTime.value=zeroPad(hours) + ":" + zeroPad(endDate.getMinutes()) + " " + ending;
+// });
 
 </script>
 

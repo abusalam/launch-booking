@@ -9,7 +9,7 @@
 
 		<!-- Favicon and title -->
 		<link rel="icon" href="<?=base_url('/favicon.ico')?>">
-		<title><?= $title ?? 'Home' ?> - Booking</title>
+		<title><?= $title ?? 'Home' ?> - Boat Booking</title>
 
 		<!-- Halfmoon 1.1.1 CSS -->
 		<link href="<?=base_url('/css/halfmoon.min.css')?>" rel="stylesheet" />
@@ -59,7 +59,7 @@
 				<!-- Navbar brand -->
 				<a href="<?=base_url()?>" class="navbar-brand">
 					<div class="branding">
-						<div class="large">Booking</div>
+						<div class="large">Boat Booking</div>
 						<!-- <div><?= getenv('AUTHORITY')?></div> -->
 					</div>
 				</a>
