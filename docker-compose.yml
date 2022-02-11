@@ -10,9 +10,9 @@ services:
       MYSQL_DATABASE: $DB_NAME
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
-#    volumes:
-#      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
-#      - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
+    volumes:
+    - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+  #    - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
 
   #  postgres:
   #    image: wodby/postgres:$POSTGRES_TAG
@@ -37,20 +37,21 @@ services:
       DB_NAME: $DB_NAME
       PHP_FPM_USER: wodby
       PHP_FPM_GROUP: wodby
-## Read instructions at https://wodby.com/docs/stacks/php/local/#xdebug
-#      PHP_XDEBUG: 1
-#      PHP_XDEBUG_MODE: debug
-#      PHP_IDE_CONFIG: serverName=my-ide
-#      PHP_XDEBUG_IDEKEY: "my-ide"
-#      PHP_XDEBUG_CLIENT_HOST: 172.17.0.1 # Linux
-#      PHP_XDEBUG_CLIENT_HOST: host.docker.internal # Docker 18.03+ Mac/Win
-#      PHP_XDEBUG_CLIENT_HOST: 10.0.75.1 # Windows
+    #      # Read instructions at https://wodby.com/docs/stacks/php/local/#xdebug
+    #      PHP_XDEBUG: 1
+    #      PHP_XDEBUG_DEFAULT_ENABLE: 1
+    #      PHP_XDEBUG_REMOTE_CONNECT_BACK: 0
+    #      PHP_IDE_CONFIG: serverName=my-ide
+    #      PHP_XDEBUG_IDEKEY: "my-ide"
+    #      PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux
+    #      PHP_XDEBUG_REMOTE_HOST: 10.254.254.254 # macOS
+    #      PHP_XDEBUG_REMOTE_HOST: 10.0.75.1 # Windows
     volumes:
-    - ./:/var/www/html:cached
-## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/php/local#docker-for-mac
-#    - mutagen:/var/www/html
-## For XHProf and Xdebug profiler traces
-#    - files:/mnt/files
+    - ./:/var/www/html/:cached
+  #    # Alternative for macOS users: docker-sync https://wodby.com/docs/stacks/drupal/local#docker-for-mac
+  #    - docker-sync:/var/www/html
+  #    # For XHProf and Xdebug profiler traces
+  #    - files:/mnt/files
 
   nginx:
     image: wodby/nginx:$NGINX_TAG
@@ -64,28 +65,28 @@ services:
       NGINX_VHOST_PRESET: php
       NGINX_SERVER_ROOT: /var/www/html/public
     volumes:
-    - ./:/var/www/html:cached
-## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/php/local#docker-for-mac
-#    - mutagen:/var/www/html
+    - ./:/var/www/html/:cached
+    #    # Alternative for macOS users: docker-sync https://wodby.com/docs/stacks/drupal/local#docker-for-mac
+    #    - docker-sync:/var/www/html
     labels:
     - "traefik.http.routers.${PROJECT_NAME}_nginx.rule=Host(`${PROJECT_BASE_URL}`)"
 
-#  apache:
-#    image: wodby/apache:$APACHE_TAG
-#    container_name: "${PROJECT_NAME}_apache"
-#    depends_on:
-#    - php
-#    environment:
-#      APACHE_LOG_LEVEL: debug
-#      APACHE_BACKEND_HOST: php
-#      APACHE_VHOST_PRESET: php
-#      APACHE_DOCUMENT_ROOT: /var/www/html/public
-#    volumes:
-#    - ./:/var/www/html:cached
-### Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/php/local#docker-for-mac
-##    - mutagen:/var/www/html
-#    labels:
-#    - "traefik.http.routers.${PROJECT_NAME}_apache.rule=Host(`${PROJECT_BASE_URL}`)"
+  apache:
+    image: wodby/apache:$APACHE_TAG
+    container_name: "${PROJECT_NAME}_apache"
+    depends_on:
+    - php
+    environment:
+      APACHE_LOG_LEVEL: debug
+      APACHE_BACKEND_HOST: php
+      APACHE_VHOST_PRESET: php
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    volumes:
+    - ./:/var/www/html:cached
+    #    # Alternative for macOS users: docker-sync https://wodby.com/docs/stacks/drupal/local#docker-for-mac
+    #    - docker-sync:/var/www/html
+    labels:
+    - "traefik.http.routers.${PROJECT_NAME}_apache.rule=Host(`${PROJECT_BASE_URL}`)"
 
   mailhog:
     image: mailhog/mailhog
@@ -132,17 +133,17 @@ services:
 #    labels:
 #    - "traefik.http.routers.${PROJECT_NAME}_adminer.rule=Host(`adminer.${PROJECT_BASE_URL}`)"
 
-#  pma:
-#    image: phpmyadmin/phpmyadmin
-#    container_name: "${PROJECT_NAME}_pma"
-#    environment:
-#      PMA_HOST: $DB_HOST
+  pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: "${PROJECT_NAME}_pma"
+    environment:
+      PMA_HOSTS: $DB_HOST,10.173.0.127
 #      PMA_USER: $DB_USER
-#      PMA_PASSWORD: $DB_PASSWORD
-#      PHP_UPLOAD_MAX_FILESIZE: 1G
-#      PHP_MAX_INPUT_VARS: 1G
-#    labels:
-#    - "traefik.http.routers.${PROJECT_NAME}_pma.rule=Host(`pma.${PROJECT_BASE_URL}`)"
+      PMA_PASSWORD: $DB_PASSWORD
+      PHP_UPLOAD_MAX_FILESIZE: 1G
+      PHP_MAX_INPUT_VARS: 1G
+    labels:
+    - "traefik.http.routers.${PROJECT_NAME}_pma.rule=Host(`pma.${PROJECT_BASE_URL}`)"
 
 #  solr:
 #    image: wodby/solr:$SOLR_TAG
@@ -211,7 +212,7 @@ services:
 #  webgrind:
 #    image: wodby/webgrind:$WEBGRIND_TAG
 #    environment:
-#      WEBGRIND_PROFILER_DIR: /mnt/files/xdebug
+#      WEBGRIND_PROFILER_DIR: /mnt/files/xdebug/profiler
 #    labels:
 #    - "traefik.http.routers.${PROJECT_NAME}_webgrind.rule=Host(`webgrind.${PROJECT_BASE_URL}`)"
 #    volumes:
@@ -229,27 +230,28 @@ services:
 #    labels:
 #    - "traefik.http.routers.${PROJECT_NAME}_xhprof.rule=Host(`xhprof.${PROJECT_BASE_URL}`)"
 
+  portainer:
+    image: portainer/portainer
+    container_name: "${PROJECT_NAME}_portainer"
+    command: --no-auth -H unix:///var/run/docker.sock
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+    - "traefik.http.routers.${PROJECT_NAME}_portainer.rule=Host(`portainer.${PROJECT_BASE_URL}`)"
+
   traefik:
     image: traefik:v2.0
     container_name: "${PROJECT_NAME}_traefik"
     command: --api.insecure=true --providers.docker
     ports:
-    - '8000:80'
-#    - '8080:8080' # Dashboard
+    - '80:80'
+    - '8080:8080' # Dashboard
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
 
-#  mutagen:
-#    build:
-#      context: .
-#      dockerfile: mutagen/Dockerfile
-#    init: true
-#    container_name: "mutagen"
-#    volumes:
-#    - mutagen:/var/www/html
-
 #volumes:
-## Mutagen for macOS users
-#  mutagen:
+## Docker-sync for macOS users
+#  docker-sync:
+#    external: true
 ## For Xdebug profiler
 #  files:

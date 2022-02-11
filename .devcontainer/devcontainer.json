@@ -1,0 +1,54 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.128.0/containers/php-7
+{
+	"name": "PHP 7",
+	"dockerFile": "Dockerfile",
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"editor.formatOnSave": true,
+		"phpSniffer.autoDetect": true,
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false,
+		"editor.wordWrapColumn": 120,
+		"editor.rulers": [
+			80,
+			120
+		],
+		"[php]": {
+			"editor.defaultFormatter": "wongjn.php-sniffer",
+		},
+		"zenMode.hideLineNumbers": false,
+		"zenMode.hideTabs": false,
+	},
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"aaron-bond.better-comments",
+		"bierner.markdown-preview-github-styles",
+		"bierner.github-markdown-preview",
+		"benemohamed.codeigniter4-snippets",
+		"coenraads.bracket-pair-colorizer-2",
+		"davidanson.vscode-markdownlint",
+		"eamodio.gitlens",
+		"equinusocio.vsc-community-material-theme",
+		"equinusocio.vsc-material-theme",
+		"equinusocio.vsc-material-theme-icons",
+		"felixfbecker.php-debug",
+		"felixfbecker.php-intellisense",
+		"formulahendry.auto-close-tag",
+		"formulahendry.auto-rename-tag",
+		"ikappas.phpcs",
+		"mikestead.dotenv",
+		"oderwat.indent-rainbow",
+		"small.php-ci",
+		"streetsidesoftware.code-spell-checker",
+		"vincaslt.highlight-matching-tag",
+		"wongjn.php-sniffer",
+	],
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "composer install",
+	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode"
+}

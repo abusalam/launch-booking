@@ -1,0 +1,75 @@
+epathshala.docker.localhost
+
+### composer create-project codeigniter4/appstarter
+docker-compose exec php composer create-project codeigniter4/appstarter ePathshala -vvv
+
+### Use ePathshala as application root
+docker-compose exec php composer require codeigniter4/translations -vvv
+docker-compose exec php ./builds release
+
+### Configure Coding Standards
+docker-compose exec php composer require codeigniter4/codeigniter4-standard --dev -vvv
+
+
+
+Things to do:
+=====================================================
+
+#### Restrict Editing Marksheet by Teacher when Finalized
+
+#### Teacher: Get list of all answers for a single assignment
+
+### Display the compression ratio in uploaded message add Watermark
+
+## Fix Role Seeder not keeping roles unique
+
+####### Add DataTables and jQuery
+
+### Enable 'uploaded[imageFile]|is_image[imageFile]' Validation in FileModel
+
+## Use afterInsert to getInsertID and do tasks
+
+## Make Subject, Topic Selection using Ajax to for
+
+## Upload File for Assignments and Answers
+
+# Mobile OTP Activator
+# Add Redirect to ePathshala Home when logout
+
+
+CAPTCHA Implementation
+SMS Gateway Implementation
+Client Side Form validation
+Login and Password Reset through OTP or Email link
+Secure File Upload with mime validation
+
+
+Home
+Courses
+Assignments
+Register
+Login
+
+
+[x] Marksheet Saved
+[x] Fixed Role and Activation when User is Created by Admin
+[x] Added Number of Questions 
+[x] Ordering the lists to show latest on top
+[x] Change Mode Button for Mobile when using canvas
+[x] My Assignments filtered as per role
+[x] Upload and Compressed Files to env configured directory
+[x] Assignment Files Displayed with Topic Details
+[x] Fixed FileSeeder with Relative Path
+[x] Added Files To Assignment
+[x] Upload Files to destination directory by YYYYMMDD
+[x] Redirect to Add Files when Assignment Created
+[x] Select Topic When Added from Assignment
+[x] Create New Topic using Form
+[x] TopicModel and Seeder with Faker Created
+[x] Cleaned and Optimized Seeders
+[x] Updated Migrations for Assignments
+[x] List Users in User Management Form
+[x] Check If Profile Update is Required for Student
+[x] Always Redirect User to Profile if School/Class not updated
+[x] Save School and Class in session when logged in
+[x] Update Profile with Class
