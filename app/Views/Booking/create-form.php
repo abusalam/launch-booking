@@ -6,7 +6,7 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-lg-4 offset-lg-4 col-md-10 offset-md-1">
+			<div class="col-md-10 offset-md-1">
 
 				<div class="card">
 					<h2 class="card-header"><?=lang('app.booking.createTitle')?></h2>

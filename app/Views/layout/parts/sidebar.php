@@ -2,7 +2,7 @@
 	<div class="sidebar-divider"></div>
 	<div class="hidden-md-and-up">
 		<div class="sidebar-link">
-			<?=view('layout/parts/YouTube', [], ['cache' => 3600])?>
+			<?='';//view('layout/parts/YouTube', [], ['cache' => 3600])?>
 		</div>
 		<div class="sidebar-divider"></div>
 	</div>
