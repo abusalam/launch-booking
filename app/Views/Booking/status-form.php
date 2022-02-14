@@ -25,7 +25,7 @@
 						<pre><?php //var_dump($pg_resp ?? '')?></pre>
 						<pre><?php //var_dump(session()->get('post_data') ?? '')?></pre>
 						
-						<a href="<?php //$pg_resp->payment_link?>" class="btn">Print Receipt</a>
+						<a href="<?=base_url(route_to('print', $id))?>" class="btn">Print Receipt</a>
 					</div>
 				</div>
 

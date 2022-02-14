@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\BookingModel;
 use App\Entities\Booking;
 use GuzzleHttp\Client;
+use FPDF;
 
 class BookingController extends BaseController
 {
@@ -262,5 +263,32 @@ class BookingController extends BaseController
 			}
 		} 
 
+	}
+
+	public function printReceipt(int $id)
+	{
+		$bookingOrder = model('BookingModel')->find($id);
+		if (! $bookingOrder)
+		{
+			return redirect()->to(base_url(route_to('create-booking')))
+					->with('error', lang('app.assignment.notFound'));
+		}
+		$pdf = new FPDF();		
+		$pdf->AddPage();
+		$pdf->SetFont('Arial','B',16);
+		$pdf->Cell(140,10,'Booking Receipt #' . $id,0,1);
+		$pdf->SetFont('Arial','B',12);
+		$pdf->Cell(140,10,$bookingOrder->passenger,1);
+		$pdf->Cell(0,10,'Status: ' . $bookingOrder->getStatus(),1,1);
+		$pdf->Cell(140,10,'Slot: ' . $bookingOrder->getBookedSlot(),1);
+		$pdf->Cell(0,10,'Rs. ' . $bookingOrder->getAmount(),1,1,'C');
+
+		$pdf->Cell(0,10,'Mobile: ' . $bookingOrder->getMobile(),1,1);
+		$pdf->Cell(0,10,'Address: ' . $bookingOrder->getAddress(),1,1);
+		$pdf->Cell(0,10,'Purpose: ' . $bookingOrder->getPurpose(),1,1);
+
+
+		$this->response->setHeader('Content-Type', 'application/pdf');
+		$pdf->Output();
 	}
 }

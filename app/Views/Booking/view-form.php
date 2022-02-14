@@ -26,7 +26,7 @@
 						<pre><?php //var_dump($pg_resp ?? '')?></pre>
 						<pre><?php //var_dump(session()->get('post_data') ?? '')?></pre>
 
-						<a href="<?=$pg_resp->payment_link?>" class="btn btn-success">Pay ₹<?=$booking->getAmount() ?? ''?></a>
+						<a href="<?=$pg_resp->payment_link?>" class="btn btn-success btn-lg">Pay ₹<?=$booking->getAmount() ?? ''?></a>
 					</div>
 				</div>
 

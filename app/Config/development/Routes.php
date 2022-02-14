@@ -72,6 +72,9 @@ if (session('has_no_profile')) {
 			$routes->post('(:num)/webhook', 'BookingController::webhook/$1', [
 				'as' => 'webhook',
 				]);
+			$routes->get('(:num)/print', 'BookingController::printReceipt/$1', [
+				'as' => 'print',
+				]);
 		}
 	);
 
