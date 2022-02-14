@@ -70,10 +70,16 @@ class BookingModel extends Model
 	 * @var array
 	 */
 	protected $allowedFields = [
-		'ticket',
 		'passenger',
 		'address',
 		'mobile',
+		'purpose',
+		'booking_date',
+		'start_time',
+		'hours',
+		'amount',
+		'pg_resp',
+		'status',
 	];
 
 	/**
@@ -140,6 +146,7 @@ class BookingModel extends Model
 				                    $max = 9999999999
 			               ),
 			'address'   => $faker->address,
+			'purpose'   => $faker->sentence($nbWords = 4, $variableNbWords = true),
 		];
 	}
 
@@ -161,7 +168,8 @@ class BookingModel extends Model
 	protected $validationRules = [
 		'passenger' => 'required|string|max_length[100]',
 		'mobile'    => 'required|integer|is_natural_no_zero|exact_length[10]',
-		'address'   => 'required|string',
+		'address'   => 'required|string|max_length[255]',
+		'purpose'   => 'required|string|max_length[255]',
 	];
 
 }

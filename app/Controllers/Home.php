@@ -1,6 +1,8 @@
 <?php namespace App\Controllers;
 
+use CodeIgniter\Test\Fabricator;
 use App\Models\UserModel;
+use App\Models\BookingModel;
 use Config\Services;
 
 /**
@@ -58,6 +60,9 @@ class Home extends BaseController
 		$data['tbody']  = $tbody;
 		
 		//$data['slots'] = new Booking();
+		$data['booking'] = (ENVIRONMENT !== 'production') ?
+		(new Fabricator(BookingModel::class))->make():
+		new Booking();
 
 		return view('Booking/create-form', $data);
 	}

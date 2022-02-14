@@ -19,7 +19,7 @@ class Bookings extends Migration
 			],
 			'passenger'  => [
 				'type'       => 'varchar',
-				'constraint' => 25,
+				'constraint' => 100,
 			],
 			'mobile'     => [
 				'type'       => 'varchar',
@@ -27,11 +27,25 @@ class Bookings extends Migration
 			],
 			'address'    => [
 				'type'       => 'varchar',
-				'constraint' => 25,
+				'constraint' => 255,
 			],
-			'slot'       => [
+			'purpose'    => [
+				'type'       => 'varchar',
+				'constraint' => 255,
+			],
+			'booking_date'  => [
+				'type' => 'datetime',
+				'null' => true,
+			],
+			'start_time'  => [
 				'type'       => 'varchar',
 				'constraint' => 25,
+			],
+			'hours'       => [
+				'type'       => 'int',
+				'constraint' => 11,
+				'unsigned'   => true,
+				'default'    => 2,
 			],
 			'amount'     => [
 				'type'       => 'int',
@@ -43,10 +57,14 @@ class Bookings extends Migration
 				'type'       => 'ENUM',
 				'constraint' => [
 					'pending',
-					'failed',
-					'comfirmed',
+					'FAILED',
+					'SUCCESS',
 				],
 				'default'    => 'pending',
+			],
+			'pg_resp' => [
+				'type' => 'TEXT',
+				'null' => true,
 			],
 			'created_at' => [
 				'type' => 'datetime',
@@ -64,48 +82,7 @@ class Bookings extends Migration
 		];
 		$this->forge->addField($bookings);
 		$this->forge->addKey('id', true);
-		$this->forge->addUniqueKey('ticket');
-		$this->forge->createTable('bookings', true);
-
-		$timeSlot = [
-			'id'         => [
-				'type'           => 'int',
-				'constraint'     => 11,
-				'unsigned'       => true,
-				'auto_increment' => true,
-			],
-			'amount'     => [
-				'type'       => 'int',
-				'constraint' => 11,
-				'unsigned'   => true,
-				'default'    => 0,
-			],
-			'status'     => [
-				'type'       => 'ENUM',
-				'constraint' => [
-					'pending',
-					'failed',
-					'comfirmed',
-				],
-				'default'    => 'pending',
-			],
-			'created_at' => [
-				'type' => 'datetime',
-				'null' => true,
-			],
-			'updated_at' => [
-				'type' => 'datetime',
-				'null' => true,
-			],
-			'deleted_at' => [
-				'type' => 'datetime',
-				'null' => true,
-			],
-
-		];
-		$this->forge->addField($timeSlot);
-		$this->forge->addKey('id', true);
-		$this->forge->addUniqueKey('ticket');
+		//$this->forge->addUniqueKey('ticket');
 		$this->forge->createTable('bookings', true);
 	}
 

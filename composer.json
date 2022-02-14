@@ -8,7 +8,8 @@
         "php": ">=7.2",
         "codeigniter4/framework": "^4.0",
         "codeigniter4/translations": "^4.0",
-        "myth/auth": "dev-develop"
+        "myth/auth": "dev-develop",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9@dev",

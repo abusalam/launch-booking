@@ -38,15 +38,46 @@ if (session('has_no_profile')) {
 		'as'     => 'profile',
 		'filter' => 'login'
 		]);
-		
-	// Shows the topic creation form
-	$routes->get('topic', 'TopicController::create', [
-		'as' => 'create-topic',
-		'filter' => 'role:teachers'
-		]);
-	$routes->post('booking', 'BookingController::tryToBook', [
-		'as' => 'create-booking'
-		]);
+	
+	// Bookings Route Group
+	$routes->group(
+		'booking',
+		['namespace' => 'App\Controllers'],
+		function($routes) {
+			
+			// List of All Bookings
+			$routes->get('', 'BookingController::index', [
+				'as' => 'view-bookings',
+				'filter' => 'role:admin'
+				]);
+
+			// Shows the Booking form
+			$routes->get('new', 'BookingController::createBooking', [
+				'as' => 'create-booking',
+				]);
+			$routes->post('new', 'BookingController::tryToCreateBooking', [
+				'as' => 'create-booking'
+				]);
+
+			// Make Payment for the booking
+			$routes->get('(:num)/pay', 'BookingController::makePayment/$1', [
+				'as' => 'make-payment',
+				]);
+			$routes->post('(:num)/pay', 'BookingController::tryToMakePayment/$1', [
+				'as' => 'make-payment',
+				]);
+			$routes->get('(:num)/status', 'BookingController::setStatus/$1', [
+				'as' => 'status',
+				]);
+			$routes->post('(:num)/webhook', 'BookingController::webhook/$1', [
+				'as' => 'webhook',
+				]);
+		}
+	);
+
+
+
+
 
 	// Shows the school creation form
 	$routes->group(
