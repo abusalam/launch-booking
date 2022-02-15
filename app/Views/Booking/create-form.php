@@ -105,7 +105,7 @@
 								<?php if(session('booked_slots')): ?>
 									<p><strong>Booked Slots: </strong><br/>
 										<?php foreach(session('booked_slots') as $slot) : ?>
-											<span class="badge badge-success badge-pill pt-10 py-5"><?=$slot?></span>
+											<span class="badge badge-success badge-pill py-5 mb-5"><?=$slot?></span>
 										<?php endforeach ?>
 									</p>
 								<?php endif ?>

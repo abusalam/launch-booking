@@ -29,7 +29,7 @@
 									</h3>
 									<div class="card-body">
 										<p>
-											<span class="badge badge-success badge-pill pt-10 py-5 m-5 pull-right">
+											<span class="badge badge-success badge-pill py-5 m-5 pull-right">
 												<strong>Status: </strong><?=$booking->getStatus() ?? ''?>
 											</span>
 										</p>
