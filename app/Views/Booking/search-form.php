@@ -19,39 +19,38 @@
 						<?= form_open_multipart(base_url(route_to('search'))) ?>
 							<fieldset <?php // session('has_no_profile') ? '' : 'disabled="disabled"'?>>
 								<pre><?php //var_dump($booking->getTimeSlots() ?? '')?></pre>
-
-                    <div class="<?php if(session('errors.ticket')) : ?>is-invalid<?php endif ?>">
-                      <div class="form-group">
-                        <label for="ticket" class="required"><?=lang('app.booking.ticket')?></label>
-                        <input type="text" class="form-control" id="ticket" required="required"
-                              name="ticket" placeholder="<?=lang('app.booking.ticket')?>"
-                              value="<?=old('ticket') ?>">
-                      </div>
-                    </div>
-                    <?php if ($booking ?? 0): ?>
-                    <div class="card">
-                      <h3 class="card-header">
-                        <?=$booking->getPassenger() ?? lang('app.booking.notFound')?>
-                        <span class="text-monospace text-primary">
-                          Ticket No: <?=$booking->ticket?>
-                        </span>
-                      </h3>
-                      <div class="card-body">
-                        <p>
-                          <span class="badge badge-success badge-pill m-5 pull-right">
-                            <strong>Status: </strong><?=$booking->getStatus() ?? ''?>
-                          </span>
-                        </p>
-                        <h4>Rent Fees ₹<?=$booking->getAmount() ?? ''?></h4>
-                        <p><strong>Mobile: </strong><?=$booking->getMobile() ?? ''?></p>
-                        <p><strong><?=lang('app.booking.address')?>: </strong><?=$booking->getAddress() ?? ''?></p>
-                        <p><strong><?=lang('app.booking.purpose')?>: </strong><?=$booking->getPurpose() ?? ''?></p>
-                        <h4>Slot: <?=$booking->getBookedSlot() ?? ''?></h4>
-                        <pre><?php //var_dump($pg_resp ?? '')?></pre>
-                        <pre><?php //var_dump(session()->get('post_data') ?? '')?></pre>
-                      </div>
-                    </div>
-                    <?php endif ?>
+								<?php if ($booking ?? 0): ?>
+								<div class="card bg-light">
+									<h3 class="card-header">
+										<?=$booking->getPassenger() ?? lang('app.booking.notFound')?>
+										<span class="text-monospace text-primary">
+											Ticket No: <?=$booking->ticket?>
+										</span>
+									</h3>
+									<div class="card-body">
+										<p>
+											<span class="badge badge-success badge-pill pt-10 py-5 m-5 pull-right">
+												<strong>Status: </strong><?=$booking->getStatus() ?? ''?>
+											</span>
+										</p>
+										<h4>Rent Fees ₹<?=$booking->getAmount() ?? ''?></h4>
+										<p><strong>Mobile: </strong><?=$booking->getMobile() ?? ''?></p>
+										<p><strong><?=lang('app.booking.address')?>: </strong><?=$booking->getAddress() ?? ''?></p>
+										<p><strong><?=lang('app.booking.purpose')?>: </strong><?=$booking->getPurpose() ?? ''?></p>
+										<h4>Slot: <?=$booking->getBookedSlot() ?? ''?></h4>
+										<pre><?php //var_dump($pg_resp ?? '')?></pre>
+										<pre><?php //var_dump(session()->get('post_data') ?? '')?></pre>
+									</div>
+								</div>
+								<?php endif ?>
+								<div class="<?php if(session('errors.ticket')) : ?>is-invalid<?php endif ?>">
+									<div class="form-group">
+										<label for="ticket" class="required"><?=lang('app.booking.ticket')?></label>
+										<input type="text" class="form-control" id="ticket" required="required"
+													name="ticket" placeholder="<?=lang('app.booking.ticket')?>"
+													value="<?=old('ticket') ?>">
+									</div>
+								</div>
 								<pre id="debug"><?php //var_dump($booking ?? '')?></pre>
                 <button type="submit" class="btn btn-primary"><?=lang('app.booking.btnSearchTitle')?></button>
 							</fieldset>
@@ -63,34 +62,4 @@
 			</div>
 		</div>
 	</div>
-
-	<script {csp-script-nonce}>
-	$( function() {
-
-		$( "#date" ).datepicker({
-      showOtherMonths: true,
-      selectOtherMonths: true,
-			changeMonth: true,
-			minDate: 0, 
-			maxDate: "+2M",
-			dateFormat: 'dd/mm/yy',
-			onSelect: function(date, ui){
-				$.ajax({
-						method: "POST",
-						url: "<?=base_url(route_to('check'))?>",
-						headers: {'X-Requested-With': 'XMLHttpRequest'},
-						data: {
-							 'date': date,
-							 'csrf_test_name' : $("[name='csrf_test_name']").val(),
-						 },
-					}).done(function(resp){
-						$("#debug").text(JSON.stringify(resp));
-					});
-				
-			},
-    });
-	  
-	} );
-	</script>
-
 <?= $this->endSection() ?>

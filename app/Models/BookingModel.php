@@ -173,4 +173,18 @@ class BookingModel extends Model
 		'purpose'   => 'required|string|max_length[255]',
 	];
 
+	protected $beforeInsert = ['setBookingDate'];
+	protected $beforeUpdate = ['setBookingDate'];
+
+	protected function setBookingDate(array $data)
+	{
+		if (! isset($data['data']['booking_date'])) {
+				return $data;
+		}
+
+		$data['data']['booking_date'] = \DateTime::createFromFormat("Y-m-d H:i:s", $data['data']['booking_date'])->format("Y-m-d");
+		unset($data['data']['booking_date']);
+
+		return $data;
+	}
 }

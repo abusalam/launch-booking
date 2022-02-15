@@ -18,7 +18,7 @@
 					<div class="card-body">
 						<?= view('Myth\Auth\Views\_message_block') ?>
 						<p>
-							<span class="badge badge-secondary badge-pill m-5 pull-right">
+							<span class="badge badge-success badge-pill pt-10 py-5 m-5 pull-right">
 								<strong>Status: </strong><?=$booking->getStatus() ?? ''?>
 							</span>
 						</p>

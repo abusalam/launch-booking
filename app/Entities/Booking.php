@@ -86,7 +86,7 @@ class Booking extends Entity
 		}
 
 		$slot = $this->getTimeSlot(
-			\DateTime::createFromFormat("Y-m-d H:i:s", $this->attributes['booking_date'])->format("Y-m-d"),
+			\DateTime::createFromFormat("Y-m-d", $this->attributes['booking_date'])->format("Y-m-d"),
 			$this->attributes['hours'] * 60,
 			0,
 			$this->attributes['start_time'],
