@@ -173,8 +173,8 @@ class BookingModel extends Model
 		'purpose'   => 'required|string|max_length[255]',
 	];
 
-	protected $beforeInsert = ['setBookingDate'];
-	protected $beforeUpdate = ['setBookingDate'];
+	//protected $beforeInsert = ['setBookingDate'];
+	//protected $beforeUpdate = ['setBookingDate'];
 
 	protected function setBookingDate(array $data)
 	{
