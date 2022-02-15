@@ -53,7 +53,7 @@ class Booking extends Entity
 			if($endPeriod>$end){
 				break;
 			}
-			$dateStr = \DateTime::createFromFormat("Y-m-d H:i:s", $date)->format("d/m/Y");
+			$dateStr = \DateTime::createFromFormat("Y-m-d", $date)->format("d/m/Y");
 			$initStr = $intStart->format("H:iA");
 			$endStr  = $endPeriod->format("H:iA");
 			$slot = $dateStr .' ['. $initStr ." - ". $endStr . ']';
@@ -86,7 +86,7 @@ class Booking extends Entity
 		}
 
 		$slot = $this->getTimeSlot(
-			$this->attributes['booking_date'],
+			\DateTime::createFromFormat("Y-m-d H:i:s", $this->attributes['booking_date'])->format("Y-m-d"),
 			$this->attributes['hours'] * 60,
 			0,
 			$this->attributes['start_time'],

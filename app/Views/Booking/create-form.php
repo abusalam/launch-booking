@@ -102,6 +102,13 @@
 										</div>
 									</div>
 								</div>
+								<?php if(session('booked_slots')): ?>
+									<p><strong>Booked Slots: </strong><br/>
+										<?php foreach(session('booked_slots') as $slot) : ?>
+											<span class="btn btn-success"><?=$slot?></span>
+										<?php endforeach ?>
+									</p>
+								<?php endif ?>
 								<pre id="debug"><?php //var_dump($booking->getTimeSlots() ?? '')?></pre>
 							</fieldset>
 							<button type="submit" class="btn btn-primary btn-block form-control"><?=lang('app.booking.btnCreateTitle')?></button>

@@ -123,13 +123,33 @@ class BookingController extends BaseController
 			$this->request->getPost('hours')
 		);
 
-		$slot = $newBooking->getBookedSlot();
+		$newBookingDate = \DateTime::createFromFormat("d/m/Y", $this->request->getPost('date'))->format("Y-m-d");
 
-		$bookings = $bookingModel->where('booking_date', $this->request->getPost('date'))
+		$bookings = $bookingModel->where('booking_date', $newBookingDate)
 		->where('status', 'SUCCESS')
 		->findAll();
-		//dd($bookings);
-		if(!$newBooking->getBookedSlot()) {
+		
+    $booked=FALSE;
+    $bookedSlots = array();
+    $newSlot = $newBooking->getSlot();
+    foreach($bookings as $booking) {
+			array_push($bookedSlots, $booking->getBookedSlot());
+      if($booking->getSlot() == $newSlot)
+      {
+        $booked=TRUE;
+        
+      }
+    }
+
+    session()->set('booked_slots', $bookedSlots);
+
+    if($booked) {
+			return redirect()->back()->withInput()->with('message', 'Slot Already Booked!');
+		}
+
+    $newBookingSlot = $newBooking->getBookedSlot();
+
+		if(!$newBookingSlot) {
 			return redirect()->back()->withInput()->with('message', 'Invalid booking time!');
 		}
 
