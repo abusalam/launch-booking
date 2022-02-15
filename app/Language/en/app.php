@@ -174,6 +174,7 @@
 			'address'         => 'Full Address',
 			'mobile'          => 'Mobile 10 Digits: (Eg. 9876543210)',
 			'btnCreateTitle'  => 'Make Payment',
+			'btnCheckTitle'  => 'Check Availability',
 			'btnPayTitle'     => 'Pay ₹{amount}',
 			'date'            => 'Date (dd/mm/yyyy)',
 			'startTime'       => 'Start Time',

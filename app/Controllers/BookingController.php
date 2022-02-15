@@ -123,6 +123,15 @@ class BookingController extends BaseController
 			$this->request->getPost('hours')
 		);
 
+		$slot = $newBooking->getBookedSlot();
+
+		$bookings = $bookingModel->where('booking_date', $this->request->getPost('date'))
+		->where('status', 'SUCCESS')
+		->findAll();
+		//dd($bookings);
+		if(!$newBooking->getBookedSlot()) {
+			return redirect()->back()->withInput()->with('message', 'Invalid booking time!');
+		}
 
 		if (! $bookingModel->save($newBooking))
 		{
@@ -196,8 +205,9 @@ class BookingController extends BaseController
 	public function setStatus(int $id)
 	{
 
-		$found = model('BookingModel')->find($id);
-		if (! $found)
+		$bookingModel = new BookingModel();
+		$bookingOrder = model('BookingModel')->find($id);
+		if (! $bookingOrder)
 		{
 			return redirect()->to(base_url(route_to('create-booking')))
 					->with('error', lang('app.assignment.notFound'));
@@ -217,8 +227,21 @@ class BookingController extends BaseController
 
 		$data['pg_resp'] = json_decode($response->getBody());
 
+		$status = 'FAILED';
+		if($data['pg_resp']->order_status=='PAID') {
+			$status = 'SUCCESS';
+		}
 		$data['id']     = $id;
-		$data['booking']  = $found;
+		$data['booking']  = $bookingOrder;
+		$bookingOrder
+		->setStatus($status)
+		->setPgResp(json_encode($data['pg_resp']));
+	
+	
+		if (! $bookingModel->save($bookingOrder))
+		{
+			return redirect()->back()->withInput()->with('errors', $bookingModel->errors());
+		}
 		
 		$data['config'] = $this->config;
 		return view('Booking/status-form', $data);
@@ -276,7 +299,7 @@ class BookingController extends BaseController
 		$pdf = new FPDF();		
 		$pdf->AddPage();
 		$pdf->SetFont('Arial','B',16);
-		$pdf->Cell(140,10,'Booking Receipt #' . $id,0,1);
+		$pdf->Cell(140,10,'Boat Booking Receipt #' . $id,0,1);
 		$pdf->SetFont('Arial','B',12);
 		$pdf->Cell(140,10,$bookingOrder->passenger,1);
 		$pdf->Cell(0,10,'Status: ' . $bookingOrder->getStatus(),1,1);
@@ -290,5 +313,24 @@ class BookingController extends BaseController
 
 		$this->response->setHeader('Content-Type', 'application/pdf');
 		$pdf->Output();
+	}
+
+	public function getBookingSlot()
+	{
+		$data['config'] = $this->config;
+		return view('Booking/check-form', $data);
+	}
+
+	public function getBookingsByDate()
+	{
+		$bookingModel = new BookingModel();
+		
+		$bookings = $bookingModel->where('booking_date', $this->request->getVar('date'))
+		->where('status', 'SUCCESS')
+		->findAll();
+		$data['bookings'] = $bookings;
+		//$data['csrf_token'] = $this->security->get_csrf_hash();
+		$this->response->setHeader('Content-Type', 'application/json');
+		echo json_encode($data);
 	}
 }

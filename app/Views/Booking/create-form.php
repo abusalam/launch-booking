@@ -102,6 +102,7 @@
 										</div>
 									</div>
 								</div>
+								<pre id="debug"><?php //var_dump($booking->getTimeSlots() ?? '')?></pre>
 							</fieldset>
 							<button type="submit" class="btn btn-primary btn-block form-control"><?=lang('app.booking.btnCreateTitle')?></button>
 						<?=form_close()?>
@@ -116,82 +117,30 @@
 	<script {csp-script-nonce}>
 	$( function() {
 
-    var zeroPad = function (n) {
-        return n < 10 ? '0' + n : n;
-      };
-
-    const timeSlot = [];
-    timeSlot[1] = "08:00 AM";
-    timeSlot[2] = "09:00 AM";
-    timeSlot[3] = "10:00 AM";
-    timeSlot[4] = "11:00 AM";
-	  timeSlot[5] = "12:00 AM";
-
 		$( "#date" ).datepicker({
       showOtherMonths: true,
       selectOtherMonths: true,
 			changeMonth: true,
 			minDate: 0, 
 			maxDate: "+2M",
-			dateFormat: 'dd/mm/yy'
+			dateFormat: 'dd/mm/yy',
+			onSelect: function(date, ui){
+				$.ajax({
+						method: "POST",
+						url: "<?=base_url(route_to('check'))?>",
+						headers: {'X-Requested-With': 'XMLHttpRequest'},
+						data: {
+							 'date': date,
+							 //'csrf_test_name' : $("[name='csrf_test_name']").val(),
+						 },
+					}).done(function(resp){
+						//$("#debug").text(resp);
+					});
+				
+			},
     });
-
-	  $( "#slider-range" ).slider({
-      range: true,
-      min: 1,
-      max: 5,
-      values: [ 2, 3 ],
-      slide: function( event, ui ) {
-        if(ui.values[0]==ui.values[1]) {
-          ui.slider("values", 0, 2);
-          ui.slider("values", 1, 4);
-          ui.slider("refresh");
-        } else {
-          $( "#duration" ).text( timeSlot[ui.values[ 0 ]] + " - " + timeSlot[ui.values[ 1 ]] );
-        }
-      }
-	  });
-    if ($( "#slider-range" ).slider( "values", 0 ) != $( "#slider-range" ).slider( "values", 1 )) {
-      $( "#duration" ).text( timeSlot[$( "#slider-range" ).slider( "values", 0 )] +
-		    " - " + timeSlot[$( "#slider-range" ).slider( "values", 1 )] );
-    }
 	  
 	} );
 	</script>
-
-<style {csp-style-nonce}>
-
-</style>
-
-<script {csp-script-nonce}>
-
-// var startTimeSlider = document.getElementById('startTimeSlider');
-// var startTime = document.getElementById('startTime');
-// var endTimeSlider = document.getElementById('endTimeSlider');
-// var endTime = document.getElementById('endTime');
-
-
-
-// var zeroPad = function (n) {
-//     return n < 10 ? '0' + n : n;
-//   };
-
-// startTimeSlider.addEventListener("click", function (event) {
-//  startTime.value=timeSlot[startTimeSlider.value];
-// });
-
-// endTimeSlider.addEventListener("change", function (event) {
-//   const d = new Date();
-//   var start = d.toDateString()  + " " + timeSlot[startTimeSlider.value];
-
-//   var end = Date.parse(start);
-//   var endDate = new Date(end);
-//   endDate.setMinutes( endDate.getMinutes() + (30 * endTimeSlider.value)  );
-//   var hours = (endDate.getHours() > 12 ? endDate.getHours()-12 : endDate.getHours());
-//   var ending = (endDate.getHours() >= 12 ? "PM" : "AM");
-//   endTime.value=zeroPad(hours) + ":" + zeroPad(endDate.getMinutes()) + " " + ending;
-// });
-
-</script>
 
 <?= $this->endSection() ?>

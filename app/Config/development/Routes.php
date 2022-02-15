@@ -75,6 +75,12 @@ if (session('has_no_profile')) {
 			$routes->get('(:num)/print', 'BookingController::printReceipt/$1', [
 				'as' => 'print',
 				]);
+			$routes->get('check', 'BookingController::getBookingSlot', [
+				'as' => 'check',
+				]);
+			$routes->post('check', 'BookingController::getBookingsByDate', [
+				'as' => 'check',
+				]);
 		}
 	);
 

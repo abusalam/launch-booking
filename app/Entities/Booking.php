@@ -46,41 +46,54 @@ class Booking extends Entity
 		$end = new \DateTime($end);
 		$interval = new \DateInterval("PT".$duration."M");
 		$cleanupInterval = new \DateInterval("PT".$cleanup."M");
-		$slots = array();
-		
+		$slot = '';
 		for($intStart = $start; $intStart<$end; $intStart->add($interval)->add($cleanupInterval)){
 			$endPeriod = clone $intStart;
 			$endPeriod->add($interval);
 			if($endPeriod>$end){
 				break;
 			}
-			
-			$slots[] = \DateTime::createFromFormat("Y-m-d H:i:s", $date)->format("d/m/Y") .' ['. $intStart->format("H:iA")." - ". $endPeriod->format("H:iA") . ']';
-			
+			$dateStr = \DateTime::createFromFormat("Y-m-d H:i:s", $date)->format("d/m/Y");
+			$initStr = $intStart->format("H:iA");
+			$endStr  = $endPeriod->format("H:iA");
+			$slot = $dateStr .' ['. $initStr ." - ". $endStr . ']';
 		}
+
 		
-		return $slots;
+		return $slot;
 	}
 
-	public function getTimeSlots()
+	public function getSlot()
 	{
-		$slots = [];
-		array_push($slots,$this->getTimeSlot(date('Y-m-d H:i:s'),120,0,'08:00','12:00'));
-		array_push($slots,$this->getTimeSlot(date('Y-m-d H:i:s'),120,0,'16:00','20:00'));
-		$this->timeSlot = $slots;
-		return $this->timeSlot;
+		$start = new \DateTime($this->attributes['start_time']);
+		$endTime = '12:00';
+		$end = new \DateTime($endTime);
+
+		if ($start > $end) {
+			return 2;
+		}
+		return 1;
 	}
 
 	public function getBookedSlot()
 	{
+		$start = new \DateTime($this->attributes['start_time']);
+		$endTime = '12:00';
+		$end = new \DateTime($endTime);
+
+		if ($start > $end) {
+			$endTime = '20:00';
+		}
+
 		$slot = $this->getTimeSlot(
 			$this->attributes['booking_date'],
 			$this->attributes['hours'] * 60,
 			0,
 			$this->attributes['start_time'],
-			'12:00'
+			$endTime
 		);
-		return $slot[0] ?? '';
+		
+		return $slot ?? '';
 	}
 
 	public function getPassenger()
@@ -114,6 +127,21 @@ class Booking extends Entity
 		return $this->attributes['status'] ?? '';
 	}
 
+	public function isPaid()
+	{
+		return $this->attributes['status'] == 'SUCCESS';
+	}
+
+	public function isPaying()
+	{
+		return $this->attributes['status'] == 'pending';
+	}
+
+	public function isFailed()
+	{
+		return $this->attributes['status'] == 'FAILED';
+	}
+
 	public function getAmount()
 	{
 		return $this->attributes['amount'] ?? '';
@@ -131,7 +159,7 @@ class Booking extends Entity
 
 	public function setDate($date)
 	{
-		$this->attributes['booking_date'] = \DateTime::createFromFormat("d/m/Y", $date)->format("Y-m-d");
+		$this->attributes['booking_date'] = \DateTime::createFromFormat("d/m/Y", $date)->format("Y-m-d H:i:s");
 		return $this;
 	}
 
