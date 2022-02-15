@@ -164,6 +164,7 @@ class BookingController extends BaseController
 		$requestBody = [
 			'customer_details' => [
 				'customer_id'    => $found->mobile,
+				'customer_name'  => $found->passenger,
 				'customer_email' => $found->mobile . '@example.com',
 				'customer_phone' => $found->mobile
 			],
@@ -235,6 +236,7 @@ class BookingController extends BaseController
 		$data['booking']  = $bookingOrder;
 		$bookingOrder
 		->setStatus($status)
+		->setTicket($data['pg_resp']->cf_order_id)
 		->setPgResp(json_encode($data['pg_resp']));
 	
 	
@@ -299,7 +301,7 @@ class BookingController extends BaseController
 		$pdf = new FPDF();		
 		$pdf->AddPage();
 		$pdf->SetFont('Arial','B',16);
-		$pdf->Cell(140,10,'Boat Booking Receipt #' . $id,0,1);
+		$pdf->Cell(0,10,'Boat Booking Ticket No: ' . $bookingOrder->ticket,0,1,'C');
 		$pdf->SetFont('Arial','B',12);
 		$pdf->Cell(140,10,$bookingOrder->passenger,1);
 		$pdf->Cell(0,10,'Status: ' . $bookingOrder->getStatus(),1,1);
@@ -333,4 +335,28 @@ class BookingController extends BaseController
 		$this->response->setHeader('Content-Type', 'application/json');
 		echo json_encode($data);
 	}
+
+	public function showTicketSearch()
+	{
+		$data['config'] = $this->config;
+		return view('Booking/search-form', $data);
+	}
+	
+	public function getBookingsByRef()
+	{
+		$bookingModel = new BookingModel();
+		
+		$booking = $bookingModel->where('ticket', $this->request->getPost('ticket'))
+		->where('status', 'SUCCESS')
+		->first();
+		$data['booking'] = $booking;
+		//$data['csrf_token'] = $this->security->get_csrf_hash();
+		//$this->response->setHeader('Content-Type', 'application/json');
+		//echo json_encode($data);
+		$data['config'] = $this->config;
+		
+		return view('Booking/search-form', $data);
+	}
+
+
 }

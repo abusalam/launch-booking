@@ -81,6 +81,12 @@ if (session('has_no_profile')) {
 			$routes->post('check', 'BookingController::getBookingsByDate', [
 				'as' => 'check',
 				]);
+			$routes->get('ticket', 'BookingController::showTicketSearch', [
+				'as' => 'search',
+				]);
+			$routes->post('ticket', 'BookingController::getBookingsByRef', [
+				'as' => 'search',
+				]);
 		}
 	);
 

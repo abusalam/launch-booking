@@ -70,6 +70,7 @@ class BookingModel extends Model
 	 * @var array
 	 */
 	protected $allowedFields = [
+		'ticket',
 		'passenger',
 		'address',
 		'mobile',

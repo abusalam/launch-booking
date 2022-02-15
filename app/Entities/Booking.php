@@ -122,6 +122,12 @@ class Booking extends Entity
 		return $this;
 	}
 
+	public function setTicket($ticket)
+	{
+		$this->attributes['ticket']=$ticket;
+		return $this;
+	}
+
 	public function getStatus()
 	{
 		return $this->attributes['status'] ?? '';

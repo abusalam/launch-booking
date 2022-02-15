@@ -12,7 +12,7 @@
 					<h2 class="card-header">
 						<?=$booking->getPassenger() ?? lang('app.booking.notFound')?>
 						<span class="text-monospace text-primary">
-							#<?=$id?>
+							Ticket No: <?=$pg_resp->cf_order_id?>
 						</span>
 					</h2>
 					<div class="card-body">
