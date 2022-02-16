@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\Test\Fabricator;
 use App\Controllers\BaseController;
 use App\Models\BookingModel;
 use App\Entities\Booking;
@@ -123,6 +124,20 @@ class BookingController extends BaseController
 			$this->request->getPost('hours')
 		);
 
+		//Check if the date is valid
+		if(!$newBooking->isValidBookingDateTime())
+		{
+			return redirect()->back()->withInput()->with('message', 'Invalid booking datetime!');
+		}
+
+		// Check if the Start Time and hours are valid
+		$newBookingSlot = $newBooking->getBookedSlot();
+
+		if(!$newBookingSlot) {
+			return redirect()->back()->withInput()->with('message', 'Invalid booking hours!');
+		}
+
+		// Check if the slot is already booked
 		$newBookingDate = \DateTime::createFromFormat("d/m/Y", $this->request->getPost('date'))->format("Y-m-d");
 
 		$bookings = $bookingModel->where('booking_date', $newBookingDate)
@@ -145,12 +160,6 @@ class BookingController extends BaseController
 
     if($booked) {
 			return redirect()->back()->withInput()->with('message', 'Slot Already Booked!');
-		}
-
-    $newBookingSlot = $newBooking->getBookedSlot();
-
-		if(!$newBookingSlot) {
-			return redirect()->back()->withInput()->with('message', 'Invalid booking time!');
 		}
 
 		if (! $bookingModel->save($newBooking))

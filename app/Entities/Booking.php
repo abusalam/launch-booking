@@ -169,6 +169,11 @@ class Booking extends Entity
 		return $this;
 	}
 
+	public function getDate()
+	{
+		return \DateTime::createFromFormat("Y-m-d", $this->attributes['booking_date']);
+	}
+
 	public function setStartTime($startTime)
 	{
 		$this->attributes['start_time'] = $startTime;
@@ -187,4 +192,18 @@ class Booking extends Entity
 		return $this;
 	}
 
+	public function getStartDateTime()
+	{
+		return \DateTime::createFromFormat("Y-m-d H:i", $this->attributes['booking_date']. ' ' . $this->attributes['start_time']);
+	}
+	public function isValidBookingDateTime()
+	{
+		$currentDateTime = new \DateTime();
+		if($this->getStartDateTime() < $currentDateTime)
+		{
+			return false;
+		}
+
+		return true;
+	}
 }
