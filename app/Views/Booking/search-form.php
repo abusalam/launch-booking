@@ -20,7 +20,7 @@
 							<fieldset <?php // session('has_no_profile') ? '' : 'disabled="disabled"'?>>
 								<pre><?php //var_dump($booking->getTimeSlots() ?? '')?></pre>
 								<?php if ($booking ?? 0): ?>
-								<div class="card bg-light">
+								<div class="card bg-light-lm bg-dark-light-dm ">
 									<h3 class="card-header">
 										<?=$booking->getPassenger() ?? lang('app.booking.notFound')?>
 										<span class="text-monospace text-primary">

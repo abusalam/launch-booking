@@ -34,7 +34,7 @@ class Bookings extends Migration
 				'constraint' => 255,
 			],
 			'booking_date'  => [
-				'type' => 'datetime',
+				'type' => 'date',
 				'null' => true,
 			],
 			'start_time'  => [
