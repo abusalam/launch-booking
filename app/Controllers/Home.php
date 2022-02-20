@@ -3,6 +3,7 @@
 use CodeIgniter\Test\Fabricator;
 use App\Models\UserModel;
 use App\Models\BookingModel;
+use App\Entities\Booking;
 use Config\Services;
 
 /**
