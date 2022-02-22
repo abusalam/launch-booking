@@ -54,8 +54,8 @@ class Booking extends Entity
 				break;
 			}
 			$dateStr = \DateTime::createFromFormat("Y-m-d", $date)->format("d/m/Y");
-			$initStr = $intStart->format("H:iA");
-			$endStr  = $endPeriod->format("H:iA");
+			$initStr = $intStart->format("h:iA");
+			$endStr  = $endPeriod->format("h:iA");
 			$slot = $dateStr .' ['. $initStr ." - ". $endStr . ']';
 		}
 
