@@ -24,13 +24,13 @@ class RoleSeeder extends Seeder
 				'name'        => 'admins',
 				'description' => 'Administrator: Manages user roles and permissions.',
 			],
-			'teachers' => [
-				'name'        => 'teachers',
-				'description' => 'Teacher: Creates and evaluates assignments.',
+			'passengers' => [
+				'name'        => 'passengers',
+				'description' => 'passenger: books boat tickets.',
 			],
-			'students' => [
-				'name'        => 'students',
-				'description' => 'Student: Submits assignments for evaluation.',
+			'operators' => [
+				'name'        => 'operators',
+				'description' => 'operator: Modify or Cancel booked tickets.',
 			],
 		];
 

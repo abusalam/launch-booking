@@ -25,20 +25,20 @@ class UserSeeder extends Seeder
 
 		$newUser           = $fabricator->make();
 		$newUser->username = 'admin';
-		$newUser->setSchoolId(1);
+		//$newUser->setSchoolId(1);
 		$newUserModel->withGroup('admins')->save($newUser);
 		// $groupModel->addUserToGroup(1, 2);
 		// $groupModel->addUserToGroup(1, 3);
 
 		$newUser           = $fabricator->make();
-		$newUser->username = 'teacher';
-		$newUser->setSchoolId(1);
-		$newUserModel->withGroup('teachers')->save($newUser);
+		$newUser->username = 'passenger';
+		//$newUser->setSchoolId(1);
+		$newUserModel->withGroup('passengers')->save($newUser);
 
 		$newUser           = $fabricator->make();
-		$newUser->username = 'student';
-		$newUser->setSchoolId(1);
-		$newUserModel->withGroup('students')->save($newUser);
+		$newUser->username = 'operator';
+		//$newUser->setSchoolId(1);
+		$newUserModel->withGroup('operators')->save($newUser);
 
 		//$newUsers = $fabricator->make(20);
 

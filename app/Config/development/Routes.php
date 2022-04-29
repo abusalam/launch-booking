@@ -42,7 +42,10 @@ if (session('has_no_profile')) {
 	// Bookings Route Group
 	$routes->group(
 		'booking',
-		['namespace' => 'App\Controllers'],
+		[
+			'namespace' => 'App\Controllers',
+			'filter' => 'login'
+		],
 		function($routes) {
 			
 			// List of All Bookings

@@ -5,7 +5,7 @@
 			'desc'  => 'To access assignments and get them evaluated.',
 		],
 		'home'           => [
-			'welcome'    => 'Welcome to ePathshala',
+			'welcome'    => 'Welcome to Jungle Kanya Launch',
 			'disclaimer' => 'Contents owned, maintained and updated by - ',
 		],
 		'menu'           => [
@@ -14,7 +14,7 @@
 			'createTitle'       => 'Create New Account',
 			'updateTitle'       => 'Update Account(Pending)',
 			'updateProfile'     => 'My Profile',
-			'updateUserProfile' => 'Update Profile(Pending)',
+			'contact' 					=> 'Contact Us',
 			'booking'           => 'Boat Booking',
 			'search'            => 'Check Booking',
 			'login'             => 'Login',

@@ -64,8 +64,8 @@ class Home extends BaseController
 		$data['booking'] = (ENVIRONMENT !== 'production') ?
 		(new Fabricator(BookingModel::class))->make():
 		new Booking();
-
-		return view('Booking/create-form', $data);
+		$this->response->CSP->addChildSrc('https://www.google.com');
+		return view('Booking/home', $data);
 	}
 
 	public function ci()

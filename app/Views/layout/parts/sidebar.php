@@ -132,12 +132,19 @@
 			</span>
 			<?=lang('app.menu.search')?>
 		</a>
-		<a href="<?= base_url(route_to('home'))?>"
-			class="sidebar-link sidebar-link-with-icon <?= add_class('home')?>">
+		<a href="<?= base_url(route_to('create-booking'))?>"
+			class="sidebar-link sidebar-link-with-icon <?= add_class('create-booking')?>">
 			<span class="sidebar-icon">
 				<i class="fa fa-ship" aria-hidden="true"></i>
 			</span>
 			<?=lang('app.menu.booking')?>
+		</a>
+		<a href="<?= base_url(route_to('home'))?>"
+			class="sidebar-link sidebar-link-with-icon <?= add_class('home')?>">
+			<span class="sidebar-icon">
+				<i class="fa fa-address-book" aria-hidden="true"></i>
+			</span>
+			<?=lang('app.menu.contact')?>
 		</a>
 		<!-- <a href="<?= base_url(route_to('login'))?>"
 			class="sidebar-link sidebar-link-with-icon <?= add_class('login')?>">
@@ -152,10 +159,12 @@
 <div class="flex-grow-1"></div> <!-- push the below items to the bottom -->
 
 <div class="sidebar-menu">
+	<?php if(ENVIRONMENT !== 'production'): ?>
 	<div class="sidebar-link">
-		<span class="badge badge-secondary badge-pill m-5">Env: <?= ENVIRONMENT ?></span>
+		<span class="badge badge-secondary badge-pill m-5">Mode: <?= ENVIRONMENT ?></span>
 	</div>
+	<?php endif ?>
 	<div class="sidebar-link">
-		<span class="badge badge-success badge-pill m-5">Time: {elapsed_time}s</span>
+		<span class="badge badge-success badge-pill m-5">Response Time: {elapsed_time}s</span>
 	</div>
 </div>
