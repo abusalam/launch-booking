@@ -11,11 +11,6 @@ unset($minPHPVersion);
 // Path to the front controller (this file)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
-// Location of the Paths config file.
-// This is the line that might need to be changed, depending on your folder structure.
-$pathsPath = realpath(FCPATH . '../app/Config/Paths.php');
-// ^^^ Change this if you move your application folder
-
 /*
  *---------------------------------------------------------------
  * BOOTSTRAP THE APPLICATION
@@ -29,11 +24,16 @@ $pathsPath = realpath(FCPATH . '../app/Config/Paths.php');
 chdir(__DIR__);
 
 // Load our paths config file
-require $pathsPath;
+// This is the line that might need to be changed, depending on your folder structure.
+$pathsConfig = FCPATH . '../app/Config/Paths.php';
+// ^^^ Change this if you move your application folder
+require realpath($pathsConfig) ?: $pathsConfig;
+
 $paths = new Config\Paths();
 
 // Location of the framework bootstrap file.
-$app = require rtrim($paths->systemDirectory, '/ ') . '/bootstrap.php';
+$bootstrap = rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
+$app       = require realpath($bootstrap) ?: $bootstrap;
 
 /*
  *---------------------------------------------------------------

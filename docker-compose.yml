@@ -30,28 +30,29 @@ services:
     image: wodby/php:$PHP_TAG
     container_name: "${PROJECT_NAME}_php"
     environment:
-      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+      SSMTP_MAILHUB: mailhog:1025
+#      SSMTP_MAILHUB: opensmtpd:25
+      PHP_SENDMAIL_PATH: '"/usr/bin/dos2unix -u | /usr/sbin/ssmtp -t -f"'
       DB_HOST: $DB_HOST
       DB_USER: $DB_USER
       DB_PASSWORD: $DB_PASSWORD
       DB_NAME: $DB_NAME
       PHP_FPM_USER: wodby
       PHP_FPM_GROUP: wodby
-    #      # Read instructions at https://wodby.com/docs/stacks/php/local/#xdebug
-    #      PHP_XDEBUG: 1
-    #      PHP_XDEBUG_DEFAULT_ENABLE: 1
-    #      PHP_XDEBUG_REMOTE_CONNECT_BACK: 0
-    #      PHP_IDE_CONFIG: serverName=my-ide
-    #      PHP_XDEBUG_IDEKEY: "my-ide"
-    #      PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux
-    #      PHP_XDEBUG_REMOTE_HOST: 10.254.254.254 # macOS
-    #      PHP_XDEBUG_REMOTE_HOST: 10.0.75.1 # Windows
+## Read instructions at https://wodby.com/docs/stacks/php/local/#xdebug
+#      PHP_XDEBUG: 1
+#      PHP_XDEBUG_MODE: debug
+#      PHP_IDE_CONFIG: serverName=my-ide
+#      PHP_XDEBUG_IDEKEY: "my-ide"
+#      PHP_XDEBUG_CLIENT_HOST: 172.17.0.1 # Linux
+#      PHP_XDEBUG_CLIENT_HOST: host.docker.internal # Docker 18.03+ Mac/Win
+#      PHP_XDEBUG_CLIENT_HOST: 10.0.75.1 # Windows
     volumes:
-    - ./:/var/www/html/:cached
-  #    # Alternative for macOS users: docker-sync https://wodby.com/docs/stacks/drupal/local#docker-for-mac
-  #    - docker-sync:/var/www/html
-  #    # For XHProf and Xdebug profiler traces
-  #    - files:/mnt/files
+    - ./:/var/www/html:cached
+## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/php/local#docker-for-mac
+#    - backend:/var/www/html
+## For XHProf and Xdebug profiler traces
+#    - files:/mnt/files
 
   nginx:
     image: wodby/nginx:$NGINX_TAG
@@ -65,28 +66,28 @@ services:
       NGINX_VHOST_PRESET: php
       NGINX_SERVER_ROOT: /var/www/html/public
     volumes:
-    - ./:/var/www/html/:cached
-    #    # Alternative for macOS users: docker-sync https://wodby.com/docs/stacks/drupal/local#docker-for-mac
-    #    - docker-sync:/var/www/html
+    - ./:/var/www/html:cached
+## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/php/local#docker-for-mac
+#    - backend:/var/www/html
     labels:
     - "traefik.http.routers.${PROJECT_NAME}_nginx.rule=Host(`${PROJECT_BASE_URL}`)"
 
-  apache:
-    image: wodby/apache:$APACHE_TAG
-    container_name: "${PROJECT_NAME}_apache"
-    depends_on:
-    - php
-    environment:
-      APACHE_LOG_LEVEL: debug
-      APACHE_BACKEND_HOST: php
-      APACHE_VHOST_PRESET: php
-      APACHE_DOCUMENT_ROOT: /var/www/html/public
-    volumes:
-    - ./:/var/www/html:cached
-    #    # Alternative for macOS users: docker-sync https://wodby.com/docs/stacks/drupal/local#docker-for-mac
-    #    - docker-sync:/var/www/html
-    labels:
-    - "traefik.http.routers.${PROJECT_NAME}_apache.rule=Host(`${PROJECT_BASE_URL}`)"
+#  apache:
+#    image: wodby/apache:$APACHE_TAG
+#    container_name: "${PROJECT_NAME}_apache"
+#    depends_on:
+#    - php
+#    environment:
+#      APACHE_LOG_LEVEL: debug
+#      APACHE_BACKEND_HOST: php
+#      APACHE_VHOST_PRESET: php
+#      APACHE_DOCUMENT_ROOT: /var/www/html/public
+#    volumes:
+#    - ./:/var/www/html:cached
+### Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/php/local#docker-for-mac
+##    - backend:/var/www/html
+#    labels:
+#    - "traefik.http.routers.${PROJECT_NAME}_apache.rule=Host(`${PROJECT_BASE_URL}`)"
 
   mailhog:
     image: mailhog/mailhog
@@ -103,6 +104,8 @@ services:
 #    command: sudo -E LD_PRELOAD=/usr/lib/preloadable_libiconv.so crond -f -d 0
 #    volumes:
 #    - ./:/var/www/html:cached
+### Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/php/local#docker-for-mac
+##    - backend:/var/www/html
 
 #  varnish:
 #    image: wodby/varnish:$VARNISH_TAG
@@ -212,7 +215,7 @@ services:
 #  webgrind:
 #    image: wodby/webgrind:$WEBGRIND_TAG
 #    environment:
-#      WEBGRIND_PROFILER_DIR: /mnt/files/xdebug/profiler
+#      WEBGRIND_PROFILER_DIR: /mnt/files/xdebug
 #    labels:
 #    - "traefik.http.routers.${PROJECT_NAME}_webgrind.rule=Host(`webgrind.${PROJECT_BASE_URL}`)"
 #    volumes:
@@ -245,13 +248,31 @@ services:
     command: --api.insecure=true --providers.docker
     ports:
     - '80:80'
-    - '8080:8080' # Dashboard
+#    - '8080:8080' # Dashboard
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
 
+#x-mutagen:
+#  sync:
+#    defaults:
+#      ignore:
+#        vcs: true
+#        paths:
+#        - .DS_Store
+#        - .history
+#        - .idea
+#    backend:
+#      alpha: "."
+#      beta: "volume://backend"
+#      configurationBeta:
+#        permissions:
+#          defaultFileMode: 0644
+#          defaultDirectoryMode: 0755
+#          defaultOwner: "id:501"
+#          defaultGroup: "id:20"
+
 #volumes:
-## Docker-sync for macOS users
-#  docker-sync:
-#    external: true
+## Mutagen for macOS users
+#  backend:
 ## For Xdebug profiler
 #  files:
