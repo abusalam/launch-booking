@@ -144,21 +144,19 @@ class BookingController extends BaseController
 		->where('status', 'SUCCESS')
 		->findAll();
 		
-    $booked=FALSE;
-    $bookedSlots = array();
-    $newSlot = $newBooking->getSlot();
-    foreach($bookings as $booking) {
+		$booked=FALSE;
+		$bookedSlots = array();
+		$newSlot = $newBooking->getSlot();
+		foreach($bookings as $booking) {
 			array_push($bookedSlots, $booking->getBookedSlot());
-      if($booking->getSlot() == $newSlot)
-      {
-        $booked=TRUE;
-        
-      }
-    }
+			if($booking->getSlot() == $newSlot) {
+				$booked=TRUE;
+			}
+		}
 
-    session()->set('booked_slots', $bookedSlots);
+		session()->set('booked_slots', $bookedSlots);
 
-    if($booked) {
+		if($booked) {
 			return redirect()->back()->withInput()->with('message', 'Slot Already Booked!');
 		}
 
@@ -208,6 +206,7 @@ class BookingController extends BaseController
 		];
 
 		$response = $client->request('POST', 'orders', [
+			//'verify' => false,
 			'body' => json_encode($requestBody),//'{"customer_details":{"customer_id":"9876543210","customer_email":"john@example.com","customer_phone":"9876543210"},"order_expiry_time":"2022-02-15T00:00:00Z","order_amount":10.15,"order_currency":"INR"}',
 			'headers' => [
 				'Accept' => 'application/json',
@@ -388,4 +387,32 @@ class BookingController extends BaseController
 	}
 
 
+	public function makeRefund(int $id)
+	{
+		$found = model('BookingModel')->find($id);
+		if (! $found)
+		{
+			return redirect()->to(base_url(route_to('create-booking')))
+					->with('error', lang('app.assignment.notFound'));
+		}
+		$client = new Client(['base_uri' => env('PG_URI')]);
+		$requestBody = [
+			'refund_amount' => $found->amount,
+			'refund_id'     => 'R' . $found->getOrderID(),
+			'refund_note'   => $found->getBookedSlot(),
+		];
+
+		$response = $client->request('POST', 'orders/' . $found->getOrderID() . '/refunds', [
+			'body' => json_encode($requestBody),//'{"customer_details":{"customer_id":"9876543210","customer_email":"john@example.com","customer_phone":"9876543210"},"order_expiry_time":"2022-02-15T00:00:00Z","order_amount":10.15,"order_currency":"INR"}',
+			'headers' => [
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/json',
+				'x-api-version' => '2022-01-01',
+				'x-client-id' => env('PG_APP_ID'),
+				'x-client-secret' => env('PG_SECRET'),
+			],
+		]);
+
+		$data['pg_resp'] = json_decode($response->getBody());
+	}
 }

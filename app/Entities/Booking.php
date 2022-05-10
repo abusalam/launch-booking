@@ -96,6 +96,12 @@ class Booking extends Entity
 		return $slot ?? '';
 	}
 
+
+	public function getOrderID()
+	{
+		return $this->attributes['ticket'] ?? '';
+	}
+
 	public function getPassenger()
 	{
 		return $this->attributes['passenger'] ?? '';
