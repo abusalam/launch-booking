@@ -328,17 +328,103 @@ class BookingController extends BaseController
 		}
 		$pdf = new FPDF();		
 		$pdf->AddPage();
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(0,20,'MV JANGAL KANYA (WATER TOURISM)',0,1,'C');
 		$pdf->SetFont('Arial','B',16);
-		$pdf->Cell(0,10,'Boat Booking Ticket No: ' . $bookingOrder->ticket,0,1,'C');
+		$pdf->Cell(0,10,'Ticket No: ' . $bookingOrder->ticket,1,1,'C');
 		$pdf->SetFont('Arial','B',12);
 		$pdf->Cell(140,10,$bookingOrder->passenger,1);
 		$pdf->Cell(0,10,'Status: ' . $bookingOrder->getStatus(),1,1);
-		$pdf->Cell(140,10,'Slot: ' . $bookingOrder->getBookedSlot(),1);
+		$pdf->Cell(140,10,'Journey Schedule: ' . $bookingOrder->getBookedSlot(),1);
 		$pdf->Cell(0,10,'Rs. ' . $bookingOrder->getAmount(),1,1,'C');
 
 		$pdf->Cell(0,10,'Mobile: ' . $bookingOrder->getMobile(),1,1);
 		$pdf->Cell(0,10,'Address: ' . $bookingOrder->getAddress(),1,1);
 		$pdf->Cell(0,10,'Purpose: ' . $bookingOrder->getPurpose(),1,1);
+
+		$pdf->Ln(4);
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(5,5,chr(149),0,0);
+		$pdf->SetFont('Arial','B',10);
+		$pdf->Cell(65,5, 'Boat Driver Mobile No: ' . env('CONTACT_DRIVER') ,0,1);
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(5,5,chr(149),0,0);
+		$pdf->SetFont('Arial','B',10);
+		$pdf->Cell(65,5, 'Coordinator Mobile No: ' . env('CONTACT_MOBILE') . ' E-Mail ID: ' . env('CONTACT_EMAIL'),0,1);
+
+		
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(5,5,chr(149),0,0);
+		$pdf->SetFont('Arial','B',10);
+		$pdf->Cell(65,5, 'Jetty (Boarding & deboarding point): ',0,0);
+		$pdf->SetFont('Arial','',10);
+		$pdf->MultiCell(120,5, 'Panchanandapur Ferry Ghat Block- Kaliachak II, PS- Mothabari, District-Malda, West Bengal',0,1);
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(5,5,chr(149),0,0);
+		$pdf->SetFont('Arial','B',10);
+		$pdf->MultiCell(190,5, "Do's & Don'ts for Passengers/Travelers",0,1);
+		$pdf->Ln(4);
+		$pdf->Cell(90,5,"Do's",1,0,'C');
+		$pdf->Cell(0,5,"Don'ts",1,1,'C');
+
+		$pdf->SetFont('Arial','',10);
+		$pdf->Cell(90,5,"Board the vessel in proper manner",1,0);
+		$pdf->Cell(0,5,"Don't rush into boat",1,1);
+
+		$pdf->Cell(90,5,"Listen to the Crew",1,0);
+		$pdf->Cell(0,5,"Don't stand/lean dangerously near railing",1,1);
+
+		$pdf->Cell(90,5,"Maintain cleanliness of the boat.",1,0);
+		$pdf->Cell(0,5,"Don't cross the designated zone on the boat.",1,1);
+
+		$pdf->Cell(90,5,"Maintain personal safety",1,0);
+		$pdf->Cell(0,5,"Don't disturb the crew while they are operating",1,1);
+
+		$pdf->Cell(90,5,'',1,0);
+		$pdf->Cell(0,5,"Don't consume alcohol or any such substance onboard.",1,1);
+
+		$pdf->Cell(90,5,'',1,0);
+		$pdf->Cell(0,5,"Don't board the vessel on drunken condition.",1,1);
+
+		$pdf->Cell(90,5,'',1,0);
+		$pdf->Cell(0,5,"Don't throw garbage into the river.",1,1);
+
+		$pdf->Cell(90,5,'',1,0);
+		$pdf->Cell(0,5,"Don't carry any kind inflammable item.",1,1);
+
+		$pdf->Ln(4);
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(5,5,chr(149),0,0);
+		$pdf->SetFont('Arial','',10);
+		$pdf->MultiCell(190,5, "No. of Passengers should not exceed " . env('MAX_PASSENGER'),0,1);
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(5,5,chr(149),0,0);
+		$pdf->SetFont('Arial','',10);
+		$pdf->MultiCell(190,5, "Booked Hours are including boarding and deboarding time",0,1);
+		
+		$pdf->Ln(4);
+		$pdf->SetFont('Arial','B',20);
+		$pdf->Cell(5,5,chr(149),0,0);
+		$pdf->SetFont('Arial','B',10);
+		$pdf->MultiCell(190,5, "Refund Policy",0,1);
+		$pdf->SetFont('Arial','B',16);
+		$pdf->Cell(10,5,'',0,0);
+		$pdf->Cell(5,5, chr(187),0,0);
+		$pdf->SetFont('Arial','',10);
+		$pdf->MultiCell(180,5, "48 hours before scheduled journey - Cancellation charges of Rs.500.00 (Rupees Five hundred) will be applicable.",0,1);
+		
+		$pdf->SetFont('Arial','B',16);
+		$pdf->Cell(10,5,'',0,0);
+		$pdf->Cell(5,5, chr(187),0,0);
+		$pdf->SetFont('Arial','',10);
+		$pdf->MultiCell(180,5, "Between 48 hours and 24 hours before scheduled journey time - 70% refund of the fare.",0,1);
+
+		$pdf->SetFont('Arial','B',16);
+		$pdf->Cell(10,5,'',0,0);
+		$pdf->Cell(5,5, chr(187),0,0);
+		$pdf->SetFont('Arial','',10);
+		$pdf->MultiCell(180,5, "No refund request will be entertained/accepted further.",0,1);
+
 
 
 		$this->response->setHeader('Content-Type', 'application/pdf');
