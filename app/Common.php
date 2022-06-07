@@ -16,4 +16,4 @@
  * @package ePathshala
  */
 
-define('VERSION', 'v0.5.6-dev');
+define('VERSION', 'v0.5.7');
